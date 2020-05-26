@@ -2,8 +2,10 @@ import * as React from "react";
 import { GetStaticProps, NextPage } from "next";
 import { GraphQLClient } from "graphql-request";
 
-import { getSdk } from '../sources/datocms/__generated__/types'
-import { AllArticlesQuery } from '../sources/datocms/__generated__/types'
+import { getSdk } from '../sources/datocms/__generated__/types';
+import { AllArticlesQuery } from '../sources/datocms/__generated__/types';
+
+import ArticleSummary from '../components/ArticleSummary';
 
 interface PageProps {
   data: AllArticlesQuery;
@@ -30,10 +32,7 @@ const ArticlesPage: NextPage<PageProps> = ({ data }) => (
     <span>Showing {data.allArticles.length} of {data.allArticlesMeta.count} articles</span>
 
     {data.allArticles.map(article => (
-      <article key={article.id}>
-        <h2>{article.title}</h2>
-				<div dangerouslySetInnerHTML={{ __html: article.excerpt }} />
-      </article>
+      <ArticleSummary key={article.id} {...article} />
     ))}
   </main>
 );

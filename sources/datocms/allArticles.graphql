@@ -1,11 +1,15 @@
 query allArticles($limit: IntType) {
   allArticles(first: $limit) {
-    id
-    title
-    excerpt(markdown: true)
+    ...ArticleSummary
   }
 
   allArticlesMeta: _allArticlesMeta {
     count
   }
+}
+
+fragment ArticleSummary on ArticleRecord {
+  id
+  title
+  excerpt(markdown: true)
 }
