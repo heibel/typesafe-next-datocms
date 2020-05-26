@@ -2,33 +2,23 @@ import * as React from "react";
 import { GetStaticProps, NextPage } from "next";
 import { GraphQLClient } from "graphql-request";
 
-const ARTICLES_QUERY = `query ArticlesPage($limit: IntType) {
-  allArticles(first: $limit) {
-    id
-    title
-    excerpt(markdown: true)
-  }
-
-  allArticlesMeta: _allArticlesMeta {
-    count
-  }
-}`;
+import { getSdk } from '../sources/datocms/__generated__/types'
+import { AllArticlesQuery } from '../sources/datocms/__generated__/types'
 
 interface PageProps {
-  data: any;  // Sufficient for now
+  data: AllArticlesQuery;
 }
 
 export const getStaticProps: GetStaticProps<PageProps> = async () => {
-  const endpoint = process.env.DATOCMS_GRAPHQL_URL;
-
-  const client = new GraphQLClient(endpoint, {
+  const client = new GraphQLClient(process.env.DATOCMS_GRAPHQL_URL, {
     headers: {
-      authorization: `Bearer ${process.env.DATOCMS_BEARER_TOKEN}`
-    }
+      authorization: `Bearer ${process.env.DATOCMS_BEARER_TOKEN}`,
+    },
   });
-
-  const data = await client.request(ARTICLES_QUERY, { limit: 10 });
-
+  
+  const sdk = getSdk(client);
+  const data = await sdk.allArticles({ limit: 10 })
+  
   return {
     props: { data },
   };

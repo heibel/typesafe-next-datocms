@@ -1,0 +1,11 @@
+query allArticles($limit: IntType) {
+  allArticles(first: $limit) {
+    id
+    title
+    excerpt(markdown: true)
+  }
+
+  allArticlesMeta: _allArticlesMeta {
+    count
+  }
+}

@@ -1,0 +1,15 @@
+schema:
+  - ${DATOCMS_GRAPHQL_URL}:
+      headers:
+        Authorization: Bearer ${DATOCMS_BEARER_TOKEN}
+documents:
+  - ./sources/datocms/**/*.graphql
+generates:
+  ./sources/datocms/__generated__/schema.graphql:
+    plugins:
+      - schema-ast
+  ./sources/datocms/__generated__/types.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-graphql-request
